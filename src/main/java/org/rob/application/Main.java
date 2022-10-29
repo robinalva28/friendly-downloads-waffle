@@ -2,14 +2,26 @@ package org.rob.application;
 
 import org.rob.application.filemanager.FileManager;
 
+
 public class Main {
+
     public static void main(String[] args) {
-        System.out.println("Hello world! welcome to our file management program =)");
+        try {
 
-        FileManager fm = new FileManager();
+            FileManager fm = new FileManager();
 
-        fm.echoFileTestInPath();
+            fm.echoFileTestInPath();
 
-        System.out.println("The answer of calling the methon in main is "+ fm.currentPathIsEmpty());
+            //Verifying if the source folder is empty
+            if (fm.currentPathIsEmpty()) {
+                //sleep for 0.5 minutes
+                Thread.sleep(30000);
+                System.out.println("We're awake!");
+            }
+            //fm.moveAFolderToAnotherFolder("unaCarpeta", DOCUMENTS_PATH);
+
+        } catch (Exception e) {
+            System.out.println("Exception cached in Main class: " + e);
+        }
     }
 }

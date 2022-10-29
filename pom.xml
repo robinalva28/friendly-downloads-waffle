@@ -22,11 +22,38 @@
             <version>1.18.24</version>
             <scope>provided</scope>
         </dependency>
+        <!--    Commons for use FileUtils Class    -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.8.0-beta0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.8.0-beta0</version>
+        </dependency>
+
+        <!-- For read paths from properties doc by https://github.com/webcompere/lightweight-config -->
+        <dependency>
+            <groupId>uk.org.webcompere</groupId>
+            <artifactId>lightweight-config</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.yaml/snakeyaml -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.33</version>
+        </dependency>
+
+
 
     </dependencies>
 

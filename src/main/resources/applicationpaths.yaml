@@ -1,0 +1,9 @@
+#import commonConfig.yml
+#import ${runtime.profile}-Config.yml
+
+entireSourcePath: "C:/Users/robin/Downloads/tests"
+musicPath: "C:/Users/robin/Documents/teststarget/music"
+videoPath: "C:/Users/robin/Documents/teststarget/videos"
+imagesPath: "C:/Users/robin/Documents/teststarget/images"
+documentsPath: "C:/Users/robin/Documents/teststarget/documents"
+softwarePath: "C:/Users/robin/Documents/teststarget/software"

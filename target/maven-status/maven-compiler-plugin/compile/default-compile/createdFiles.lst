@@ -1,0 +1,7 @@
+org\rob\application\Main.class
+org\rob\adapter\PropertiesReader.class
+org\rob\domain\Formats.class
+org\rob\domain\Paths.class
+org\rob\adapter\YamlReader.class
+org\rob\application\App.class
+org\rob\application\filemanager\FileManager.class

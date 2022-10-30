@@ -14,10 +14,7 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 public class FileManager {
@@ -25,6 +22,11 @@ public class FileManager {
     //Init paths and file formats from yaml
     private YamlReader<org.rob.domain.Paths> paths = new YamlReader<>("applicationpaths.yaml", new Yaml(new Constructor(org.rob.domain.Paths.class)));
     private YamlReader<org.rob.domain.Formats> formats = new YamlReader<>("applicationformats.yaml", new Yaml(new Constructor(org.rob.domain.Formats.class)));
+    private final List<String> DOC_FORMATS = formats.getResource().getDocumentsExt();
+    private final List<String> IMG_FORMATS = formats.getResource().getImagesExt();
+    private final List<String> VID_FORMATS = formats.getResource().getVideoExt();
+    private final List<String> SOFT_FORMATS = formats.getResource().getSoftwareExt();
+    private final List<String> MUSIC_FORMATS = formats.getResource().getMusicExt();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileManager.class);
 
@@ -61,7 +63,7 @@ public class FileManager {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Exception cached: " + e);
+            System.out.println("Exception cached in getAllFilePaths(): " + e);
         }
         return pathList;
     }
@@ -79,50 +81,107 @@ public class FileManager {
             }
 
             String[] split = file.getFileName().toString().split("\\.");
-            filesFormat.put(file, split[split.length-1]);
-            //System.out.println("format: " + filesFormat);
-
-            //fileManager.moveFileToAnotherFolder(file.toFile(),);
+            filesFormat.put(file, split[split.length - 1]);
         }
         return filesFormat;
     }
 
-    public void moveAllFiles(Map filesAndPath){
-
-
+    public void moveAllFiles(Map<Path, String> filesAndPath) {
+        filesAndPath.forEach(this::selectFolderAndMove);
     }
 
-    private void moveFileToAnotherFolder(File fileName, File destPath) {
+    private void selectFolderAndMove(Path path, String format) {
+        File fileToMove = new File(paths.getResource().getEntireSourcePath() + "/" + path.getFileName());
+
+        if (MUSIC_FORMATS.contains(format)) {
+            moveFileToAnotherFolder(fileToMove, Path.of(paths.getResource().getMusicPath()));
+            return;
+        }
+        if (DOC_FORMATS.contains(format)) {
+            moveFileToAnotherFolder(fileToMove, Path.of(paths.getResource().getDocumentsPath()));
+            return;
+        }
+
+        if (VID_FORMATS.contains(format)) {
+            moveFileToAnotherFolder(fileToMove, Path.of(paths.getResource().getVideoPath()));
+            return;
+        }
+        if (IMG_FORMATS.contains(format)) {
+            moveFileToAnotherFolder(fileToMove, Path.of(paths.getResource().getImagesPath()));
+            return;
+        }
+        if (SOFT_FORMATS.contains(format)) {
+            moveFileToAnotherFolder(fileToMove, Path.of(paths.getResource().getSoftwarePath()));
+        }
+    }
+
+    private void moveFileToAnotherFolder(File fileName, Path destPath) {
         try {
-            File fileToMove = new File(paths.getResource().getEntireSourcePath() + "/" + fileName);
-            File targetPath = new File(destPath + "/" + fileName);
+            File fileToMove = fileName;
+            File targetPath = new File(destPath.toUri());
 
             if (fileToMove.isDirectory()) {
                 throw new IOException("File " + fileToMove + " is not a File");
             }
 
-            FileUtils.moveFileToDirectory(fileToMove, targetPath, true);
+            if (checkIfFileExists(new File(destPath + "/" + fileToMove.getName()))) {
 
-        } catch (IOException e) {
-            System.out.println("Exception cached: " + e);
-        }
-    }
+                String[] split = fileToMove.toString().split("\\.");
+                split[split.length - 1] = "-duplicated." + split[split.length - 1];
+                String renamedString = Arrays.stream(split).reduce((a, b) -> a + b).get();
 
-    public void moveAFolderToAnotherFolder(String folderNam, String destPath) {
-        try {
-            File folderToMove = new File(paths.getResource().getEntireSourcePath() + "/" + folderNam);
-            File targetPath = new File(destPath + "/" + folderNam);
+                File fileRenamed = new File(renamedString);
 
-            if (!folderToMove.isDirectory()) {
-                throw new IOException("File " + folderToMove + " is actually not a valid directory");
+                if (fileToMove.renameTo(fileRenamed)) {
+                    fileName = fileRenamed;
+                }
             }
 
-            FileUtils.moveDirectory(folderToMove, targetPath);
+            FileUtils.moveFileToDirectory(fileName, targetPath, true);
 
         } catch (IOException e) {
-            System.out.println("Exception cached: " + e);
+            System.out.println("Exception cached in moveFileToAnotherFolder: " + e);
         }
     }
 
+    public List<Path> getAllFoldersPaths() {
+        Path dir = Paths.get(paths.getResource().getEntireSourcePath());
+        List<Path> pathList = new ArrayList<>();
+        File tempFile;
+
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+            for (Path file : stream) {
+                tempFile = file.toFile();
+                if (tempFile.isDirectory()) {
+                    pathList.add(file);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Exception cached in getAllFilePaths(): " + e);
+        }
+        return pathList;
+    }
+
+    public void moveAllFolders(List<Path> folders) {
+        folders.forEach(this::moveAFolderToAnotherFolder);
+    }
+
+    public void moveAFolderToAnotherFolder(Path folderSource) {
+        try {
+
+            if (!folderSource.toFile().isDirectory()) {
+                throw new IOException("File " + folderSource + " is actually not a directory");
+            }
+
+            FileUtils.moveDirectory(folderSource.toFile(), new File(paths.getResource().getSoftwarePath() + "/" + folderSource.getFileName()));
+
+        } catch (IOException e) {
+            System.out.println("Exception cached in moveAFolderToAnotherFolder(): " + e);
+        }
+    }
+
+    private boolean checkIfFileExists(File file) {
+        return file.exists();
+    }
 
 }

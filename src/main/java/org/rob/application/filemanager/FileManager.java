@@ -2,7 +2,7 @@ package org.rob.application.filemanager;
 
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
-import org.rob.adapter.YamlReader;
+import org.rob.common.utils.YamlReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -93,24 +93,24 @@ public class FileManager {
     private void selectFolderAndMove(Path path, String format) {
         File fileToMove = new File(paths.getResource().getEntireSourcePath() + "/" + path.getFileName());
 
-        if (MUSIC_FORMATS.contains(format)) {
+        if (MUSIC_FORMATS.contains(format.toLowerCase())) {
             moveFileToAnotherFolder(fileToMove, Path.of(paths.getResource().getMusicPath()));
             return;
         }
-        if (DOC_FORMATS.contains(format)) {
+        if (DOC_FORMATS.contains(format.toLowerCase())) {
             moveFileToAnotherFolder(fileToMove, Path.of(paths.getResource().getDocumentsPath()));
             return;
         }
 
-        if (VID_FORMATS.contains(format)) {
+        if (VID_FORMATS.contains(format.toLowerCase())) {
             moveFileToAnotherFolder(fileToMove, Path.of(paths.getResource().getVideoPath()));
             return;
         }
-        if (IMG_FORMATS.contains(format)) {
+        if (IMG_FORMATS.contains(format.toLowerCase())) {
             moveFileToAnotherFolder(fileToMove, Path.of(paths.getResource().getImagesPath()));
             return;
         }
-        if (SOFT_FORMATS.contains(format)) {
+        if (SOFT_FORMATS.contains(format.toLowerCase())) {
             moveFileToAnotherFolder(fileToMove, Path.of(paths.getResource().getSoftwarePath()));
         }
     }

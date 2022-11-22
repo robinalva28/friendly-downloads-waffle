@@ -42,7 +42,7 @@ public class App {
             fileManager.moveAllFolders(foldersToMove);
 
         } catch (Exception e) {
-            System.out.println("Exception cached in Run method: " + e);
+            System.out.println("Exception cached in Run method: " + e.getMessage());
         }
     }
 }

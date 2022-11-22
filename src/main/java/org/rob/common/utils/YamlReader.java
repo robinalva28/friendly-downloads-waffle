@@ -1,8 +1,7 @@
-package org.rob.adapter;
+package org.rob.common.utils;
 
 import lombok.Getter;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.InputStream;
 @Getter

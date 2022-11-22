@@ -3,8 +3,8 @@
 
 imagesExt: ["png", "jpeg", "jpg", "giff", "webp", "tiff", "psd", "raw", "bmp", "heif", "indd"]
 musicExt: ["pmc", "wav", "mp3", "aiff", "aac", "ogg", "wma", "flac", "alac", "m3u"]
-documentsExt: ["xml", "sfv", "rtf", "odt", "html", "swf", "pdf",
+documentsExt: ["tpl","xml", "sfv", "rtf", "odt", "html", "swf", "pdf",
                "otf", "mid", "doc", "docx", "ppt", "pptx", "xls", "json", "txt", "flv", "css", "iso", "ai", "tsv", "log", "sqlite", "sql", "epub", "cbz"]
 videoExt: ["vtt", "webm", "ogv", "md5", "mkv", "m4v", "mpeg", "mov", "mpeg4", "mpg",
   "mp4", "srt", "avi", "wmv", "h264", "264"]
-softwareExt: ["apk", "exe", "rar", "tar", "gz", "7z", "dmg", "ipa", "adf", "scr", "zip"]
+softwareExt: ["torrent","msi","apk", "exe", "rar", "tar", "gz", "7z", "dmg", "ipa", "adf", "scr", "zip"]

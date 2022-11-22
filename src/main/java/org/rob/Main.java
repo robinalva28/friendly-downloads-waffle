@@ -1,4 +1,6 @@
-package org.rob.application;
+package org.rob;
+
+import org.rob.application.App;
 
 public class Main {
 
